@@ -3,6 +3,6 @@ from django.urls import path, include
 from . import views
 
 urlpatterns = [
-    path('list/', views.movie_list, name='movie-list'),
-    path('<int:pk>/', views.movie_details, name='movie-detail'),
+    path('', views.MovieListAPI.as_view(), name='movie-list'),
+    path('<int:pk>/', views.MovieDetailAPI.as_view(), name='movie-detail'),
 ]
