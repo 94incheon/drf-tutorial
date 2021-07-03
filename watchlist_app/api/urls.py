@@ -3,6 +3,8 @@ from django.urls import path, include
 from . import views
 
 urlpatterns = [
-    path('', views.MovieListAPI.as_view(), name='movie-list'),
-    path('<int:pk>/', views.MovieDetailAPI.as_view(), name='movie-detail'),
+    path('', views.WatchListAPI.as_view(), name='movie-list'),
+    path('<int:pk>/', views.WatchDetailAPI.as_view(), name='movie-detail'),
+
+    path('stream/', views.StreamPlatformAPI.as_view(), name='stream'),
 ]

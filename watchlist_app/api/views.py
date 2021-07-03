@@ -5,40 +5,54 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 
-from watchlist_app.api.serializers import MovieSerializer
-from watchlist_app.models import Movie
+from watchlist_app.api.serializers import WatchListSerializer, StreamPlatformSerializer
+from watchlist_app.models import WatchList, StreamPlatform
 
 
-class MovieListAPI(APIView):
+class StreamPlatformAPI(APIView):
 
     def get(self, request):
-        movies = Movie.objects.all()
-        serializer = MovieSerializer(movies, many=True)
+        platforms = StreamPlatform.objects.all()
+        serializer = StreamPlatformSerializer(platforms, many=True)
         return Response(serializer.data)
 
     def post(self, request):
-        serializer = MovieSerializer(data=request.data)
+        serializer = StreamPlatformSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-class MovieDetailAPI(APIView):
+class WatchListAPI(APIView):
+
+    def get(self, request):
+        movies = WatchList.objects.all()
+        serializer = WatchListSerializer(movies, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = WatchListSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class WatchDetailAPI(APIView):
 
     def get(self, request, pk):
-        movie = get_object_or_404(Movie, pk=pk)
-        serializer = MovieSerializer(movie)
+        movie = get_object_or_404(WatchList, pk=pk)
+        serializer = WatchListSerializer(movie)
         return Response(serializer.data)
 
     def put(self, request, pk):
-        movie = get_object_or_404(Movie, pk=pk)
-        serializer = MovieSerializer(movie, data=request.data)  # 인자중요
+        movie = get_object_or_404(WatchList, pk=pk)
+        serializer = WatchListSerializer(movie, data=request.data)  # 인자중요
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def delete(self, request, pk):
-        movie = get_object_or_404(Movie, pk=pk)
+        movie = get_object_or_404(WatchList, pk=pk)
         movie.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
