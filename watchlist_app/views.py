@@ -1,0 +1,28 @@
+# from django.http.response import JsonResponse
+# from django.shortcuts import render
+
+# from .models import Movie
+
+
+# def movie_list(request):
+#     movies = Movie.objects.all()
+#     data = {
+#         'movies': list(movies.values())
+#     }
+#     return JsonResponse(data)
+
+
+# def movie_details(request, pk):
+#     try:
+#         movie = Movie.objects.get(pk=pk)
+#     except Movie.DoesNotExist:
+#         return JsonResponse({'message': '찾을 수 없습니다.'}, status=404)
+
+#     data = vars(movie)
+#     del data['_state']
+#     # data = {
+#     #     'name': movie.name,
+#     #     'description': movie.description,
+#     #     'active': movie.active
+#     # }
+#     return JsonResponse(data)
