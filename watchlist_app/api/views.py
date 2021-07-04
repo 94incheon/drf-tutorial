@@ -13,7 +13,7 @@ class StreamPlatformAPI(APIView):
 
     def get(self, request):
         platforms = StreamPlatform.objects.prefetch_related('watchlist').all()
-        serializer = StreamPlatformSerializer(platforms, many=True)
+        serializer = StreamPlatformSerializer(platforms, many=True, context={'request': request})  # HyperLinkedField
         return Response(serializer.data)
 
     def post(self, request):
