@@ -9,11 +9,16 @@ from watchlist_app.api.serializers import WatchListSerializer, StreamPlatformSer
 from watchlist_app.models import WatchList, StreamPlatform
 
 
+'''
+Class Base View
+'''
+
+
 class StreamPlatformAPI(APIView):
 
     def get(self, request):
         platforms = StreamPlatform.objects.prefetch_related('watchlist').all()
-        serializer = StreamPlatformSerializer(platforms, many=True, context={'request': request})  # HyperLinkedField
+        serializer = StreamPlatformSerializer(platforms, many=True, context={'request': request})  # HyperLinkedField, HyperLinkModelSerializer
         return Response(serializer.data)
 
     def post(self, request):
@@ -27,7 +32,7 @@ class StreamPlatformDetailAPI(APIView):
 
     def get(self, request, pk):
         platform = get_object_or_404(StreamPlatform, pk=pk)
-        serializer = StreamPlatformSerializer(platform)
+        serializer = StreamPlatformSerializer(platform, context={'request': request})
         return Response(serializer.data)
 
     def put(self, request, pk):
@@ -61,7 +66,7 @@ class WatchDetailAPI(APIView):
 
     def get(self, request, pk):
         movie = get_object_or_404(WatchList, pk=pk)
-        serializer = WatchListSerializer(movie)
+        serializer = WatchListSerializer(movie, context={'request': request})
         return Response(serializer.data)
 
     def put(self, request, pk):
