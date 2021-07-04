@@ -9,7 +9,9 @@ urlpatterns = [
     path('stream/', views.StreamPlatformAPI.as_view(), name='streamplatform-list'),
     path('stream/<int:pk>/', views.StreamPlatformDetailAPI.as_view(), name='streamplatform-detail'),  # name - HyperLinkModelSerializer 중요
 
-    path('stream/<int:pk>/review/', views.StreamPlatformDetailAPI.as_view(), name='streamplatform-detail'),  # name - HyperLinkModelSerializer 중요
-    path('stream/review/<int:pk>/', views.ReviewDetailAPI.as_view(), name='review-detail'),
+    path('review/', views.ReviewListAPI.as_view(), name='review-list'),
+    path('review/<int:pk>/', views.ReviewDetailAPI.as_view(), name='review-detail'),
 
+    # path('stream/<int:pk>/review/', views.StreamPlatformDetailAPI.as_view(), name='streamplatform-detail'),  # name - HyperLinkModelSerializer 중요
+    # path('stream/review/<int:pk>/', views.ReviewDetailAPI.as_view(), name='review-detail'),
 ]
