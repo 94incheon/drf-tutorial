@@ -1,39 +1,46 @@
 from rest_framework import serializers
 
-from watchlist_app.models import WatchList, StreamPlatform
+from watchlist_app.models import Review, WatchList, StreamPlatform
 
 
-class WatchListSerializer(serializers.HyperlinkedModelSerializer):
-
-    class Meta:
-        model = WatchList
-        fields = '__all__'
-
-
-class StreamPlatformSerializer(serializers.HyperlinkedModelSerializer):  # url name 중요
-    watchlist = WatchListSerializer(many=True, read_only=True)
-
-    class Meta:
-        model = StreamPlatform
-        fields = '__all__'
-
-
-# class WatchListSerializer(serializers.ModelSerializer):
+# class WatchListSerializer(serializers.HyperlinkedModelSerializer):
 
 #     class Meta:
 #         model = WatchList
 #         fields = '__all__'
 
 
-# class StreamPlatformSerializer(serializers.ModelSerializer):  # 1
-#     watchlist = WatchListSerializer(many=True, read_only=True)  # N (related_name)
-#     # watchlist = serializers.StringRelatedField(many=True) # __str__ 반환
-#     # watchlist = serializers.PrimaryKeyRelatedField(many=True, read_only=True) # pk값 반환
-#     # watchlist = serializers.HyperlinkedRelatedField(many=True, read_only=True, view_name='movie-detail')  # view > context
+# class StreamPlatformSerializer(serializers.HyperlinkedModelSerializer):  # url name 중요
+#     watchlist = WatchListSerializer(many=True, read_only=True)
 
 #     class Meta:
 #         model = StreamPlatform
 #         fields = '__all__'
+
+class ReviewSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Review
+        fields = '__all__'
+
+
+class WatchListSerializer(serializers.ModelSerializer):
+    reviews = ReviewSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = WatchList
+        fields = '__all__'
+
+
+class StreamPlatformSerializer(serializers.ModelSerializer):  # 1
+    watchlist = WatchListSerializer(many=True, read_only=True)  # N (related_name)
+    # watchlist = serializers.StringRelatedField(many=True) # __str__ 반환
+    # watchlist = serializers.PrimaryKeyRelatedField(many=True, read_only=True) # pk값 반환
+    # watchlist = serializers.HyperlinkedRelatedField(many=True, read_only=True, view_name='movie-detail')  # view > context
+
+    class Meta:
+        model = StreamPlatform
+        fields = '__all__'
 
 
 # def name_length(value):

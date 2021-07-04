@@ -51,7 +51,7 @@ class StreamPlatformDetailAPI(APIView):
 class WatchListAPI(APIView):
 
     def get(self, request):
-        movies = WatchList.objects.select_related('platform').all()
+        movies = WatchList.objects.select_related('platform').prefetch_related('reviews').all()
         serializer = WatchListSerializer(movies, many=True)
         return Response(serializer.data)
 
