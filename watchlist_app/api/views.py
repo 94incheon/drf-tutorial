@@ -4,6 +4,7 @@ from rest_framework import status
 from rest_framework import mixins
 from rest_framework import generics
 from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -26,11 +27,11 @@ class ReviewCreateAPI(generics.CreateAPIView):
     # 특정 영화에 대한 리뷰를 생성하기 위함
     def perform_create(self, serializer):
         pk = self.kwargs.get('pk')
+        review_user = self.request.user
+
         watchlist = WatchList.objects.get(pk=pk)
 
-        review_user = self.request.user
         review_queryset = Review.objects.filter(watchlist=watchlist, review_user=review_user)
-
         if review_queryset.exists():
             raise ValidationError('You have already reviewed this movie!')
 
@@ -40,6 +41,7 @@ class ReviewCreateAPI(generics.CreateAPIView):
 class ReviewListAPI(generics.ListAPIView):
     # queryset = Review.objects.all() # 현재 영화에 대한 리뷰를 받고싶은데, 모든리뷰를 리턴중
     serializer_class = ReviewSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
         pk = self.kwargs['pk']
@@ -49,6 +51,7 @@ class ReviewListAPI(generics.ListAPIView):
 class ReviewDetailAPI(generics.RetrieveUpdateDestroyAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 
 # class ReviewDetailAPI(mixins.RetrieveModelMixin, generics.GenericAPIView):
