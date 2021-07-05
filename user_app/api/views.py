@@ -3,6 +3,8 @@ from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from rest_framework import status
 
+from rest_framework_simplejwt.tokens import RefreshToken
+
 from user_app.api.serializers import RegistrationSerializer
 
 
@@ -29,7 +31,9 @@ def registration_view(request):
         data['username'] = account.username
         data['email'] = account.email
 
-        token = Token.objects.get(user=account)
-        data['token'] = token.key
+        # token = Token.objects.get(user=account)
+        refresh = RefreshToken.for_user(account)
+        data['access_token'] = str(refresh.access_token)
+        data['refresh_token'] = str(refresh)
 
         return Response(data, status=status.HTTP_201_CREATED)
