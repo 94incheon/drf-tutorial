@@ -20,7 +20,7 @@ urlpatterns = [
     # path('review/', views.ReviewListAPI.as_view(), name='review-list'),
     # path('review/<int:pk>/', views.ReviewDetailAPI.as_view(), name='review-detail'),
 
-    path('stream/<int:pk>/review-create/', views.ReviewCreateAPI.as_view(), name='streamplatform-create'),  # 특정영화에 대한 리뷰생성
-    path('stream/<int:pk>/review/', views.ReviewListAPI.as_view(), name='streamplatform-detail'),  # 영화에대한 모든리뷰
-    path('stream/review/<int:pk>/', views.ReviewDetailAPI.as_view(), name='review-detail'),
+    path('<int:pk>/review-create/', views.ReviewCreateAPI.as_view(), name='streamplatform-create'),  # 특정영화에 대한 리뷰생성
+    path('<int:pk>/reviews/', views.ReviewListAPI.as_view(), name='streamplatform-detail'),  # 영화에대한 모든리뷰
+    path('review/<int:pk>/', views.ReviewDetailAPI.as_view(), name='review-detail'),
 ]
