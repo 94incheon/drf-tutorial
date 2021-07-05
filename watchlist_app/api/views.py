@@ -64,6 +64,9 @@ class StreamPlatformVS(viewsets.ModelViewSet):
     queryset = StreamPlatform.objects.all()
     serializer_class = StreamPlatformSerializer
 
+    def get_queryset(self):
+        return StreamPlatform.objects.prefetch_related('watchlist', 'watchlist__reviews').all()
+
 
 # class StreamPlatformVS(viewsets.ViewSet):
 
