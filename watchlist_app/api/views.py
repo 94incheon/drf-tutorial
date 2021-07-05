@@ -51,7 +51,7 @@ class ReviewCreateAPI(generics.CreateAPIView):
 class ReviewListAPI(generics.ListAPIView):
     # queryset = Review.objects.all() # 현재 영화에 대한 리뷰를 받고싶은데, 모든리뷰를 리턴중
     serializer_class = ReviewSerializer
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         pk = self.kwargs['pk']

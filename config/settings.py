@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
+from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     # Third Party Apps
     'rest_framework',
     'rest_framework.authtoken',
+    'rest_framework_simplejwt',
     'debug_toolbar',
     # My Apps
     'watchlist_app',
@@ -146,6 +147,19 @@ REST_FRAMEWORK = {
     # ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         # 'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
+        # 'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ]
+}
+
+# JWT
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),  # AT life time
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),  # RT life time
+    'ROTATE_REFRESH_TOKENS': True,  # refresh 할때 새로운 refresh_token 반환
+    'BLACKLIST_AFTER_ROTATION': True,  # refresh 토큰 블랙리스트 추가
+    'UPDATE_LAST_LOGIN': False,  # 로그인시 last_login 필드 업데이트
+    'USER_ID_CLAIM': 'user_id',  # Payload Key값
+    'USER_ID_FIELD': 'id',  # Payload Value값
 }
