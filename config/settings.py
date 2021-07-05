@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     # My Apps
     'watchlist_app',
+    'user_app',
 ]
 
 MIDDLEWARE = [
