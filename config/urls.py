@@ -22,7 +22,7 @@ import debug_toolbar
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('watch/', include('watchlist_app.api.urls')),
-    path('api-auth/', include('rest_framework.urls')),  # DRF 로그인기능
+    # path('api-auth/', include('rest_framework.urls')),  # DRF 로그인기능, Basic인증방식 사용
 ]
 
 if settings.DEBUG:
