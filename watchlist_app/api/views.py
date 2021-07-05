@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework import mixins
 from rest_framework import generics
+from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
@@ -20,6 +21,7 @@ Class Base View
 class ReviewCreateAPI(generics.CreateAPIView):
     serializer_class = ReviewSerializer
 
+    # 특정 영화에 대한 리뷰를 생성하기 위함
     def perform_create(self, serializer):
         pk = self.kwargs.get('pk')
         movie = WatchList.objects.get(pk=pk)
@@ -57,6 +59,20 @@ class ReviewDetailAPI(generics.RetrieveUpdateDestroyAPIView):
 
 #     def post(self, request, *args, **kwargs):
 #         return self.create(request, *args, **kwargs)
+
+
+class StreamPlatformVS(viewsets.ViewSet):
+
+    def list(self, request):
+        queryset = StreamPlatform.objects.all()
+        serializer = StreamPlatformSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        queryset = StreamPlatform.objects.all()
+        watchlist = get_object_or_404(queryset, pk=pk)
+        serializer = StreamPlatformSerializer(watchlist)
+        return Response(serializer.data)
 
 
 class StreamPlatformAPI(APIView):
