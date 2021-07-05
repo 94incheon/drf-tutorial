@@ -11,7 +11,7 @@ from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 
 from watchlist_app.models import Review, WatchList, StreamPlatform
-from watchlist_app.api.permissions import AdminOrReadOnly, ReviewUserOrReadOnly
+from watchlist_app.api.permissions import IsAdminOrReadOnly, IsReviewUserOrReadOnly
 from watchlist_app.api.serializers import (ReviewSerializer, WatchListSerializer,
                                            StreamPlatformSerializer)
 
@@ -24,6 +24,7 @@ Class Base View
 class ReviewCreateAPI(generics.CreateAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
+    permission_classes = [IsAuthenticated]
 
     # 특정 영화에 대한 리뷰를 생성하기 위함
     def perform_create(self, serializer):
@@ -50,7 +51,7 @@ class ReviewCreateAPI(generics.CreateAPIView):
 class ReviewListAPI(generics.ListAPIView):
     # queryset = Review.objects.all() # 현재 영화에 대한 리뷰를 받고싶은데, 모든리뷰를 리턴중
     serializer_class = ReviewSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         pk = self.kwargs['pk']
@@ -60,7 +61,7 @@ class ReviewListAPI(generics.ListAPIView):
 class ReviewDetailAPI(generics.RetrieveUpdateDestroyAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
-    permission_classes = [ReviewUserOrReadOnly]
+    permission_classes = [IsReviewUserOrReadOnly]
 
 
 # class ReviewDetailAPI(mixins.RetrieveModelMixin, generics.GenericAPIView):
@@ -84,6 +85,7 @@ class ReviewDetailAPI(generics.RetrieveUpdateDestroyAPIView):
 class StreamPlatformVS(viewsets.ModelViewSet):
     queryset = StreamPlatform.objects.all()
     serializer_class = StreamPlatformSerializer
+    permission_classes = [IsAdminOrReadOnly]
 
     def get_queryset(self):
         return StreamPlatform.objects.prefetch_related('watchlist', 'watchlist__reviews').all()
@@ -115,6 +117,7 @@ class StreamPlatformVS(viewsets.ModelViewSet):
 
 
 class StreamPlatformAPI(APIView):
+    permission_classes = [IsAdminOrReadOnly]
 
     def get(self, request):
         platforms = StreamPlatform.objects.prefetch_related('watchlist').all()
@@ -129,6 +132,7 @@ class StreamPlatformAPI(APIView):
 
 
 class StreamPlatformDetailAPI(APIView):
+    permission_classes = [IsAdminOrReadOnly]
 
     def get(self, request, pk):
         platform = get_object_or_404(StreamPlatform, pk=pk)
@@ -149,6 +153,7 @@ class StreamPlatformDetailAPI(APIView):
 
 
 class WatchListAPI(APIView):
+    permission_classes = [IsAdminOrReadOnly]
 
     def get(self, request):
         movies = WatchList.objects.select_related('platform').prefetch_related('reviews').all()
@@ -163,6 +168,7 @@ class WatchListAPI(APIView):
 
 
 class WatchDetailAPI(APIView):
+    permission_classes = [IsAdminOrReadOnly]
 
     def get(self, request, pk):
         movie = get_object_or_404(WatchList, pk=pk)
