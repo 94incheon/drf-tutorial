@@ -7,6 +7,14 @@ from user_app.api.serializers import RegistrationSerializer
 
 
 @api_view(['POST'])
+def logout(request):
+
+    if request.method == 'POST':
+        request.user.auth_token.delete()
+        return Response({'message': 'successfully logout!'}, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
 def registration_view(request):
 
     if request.method == 'POST':
