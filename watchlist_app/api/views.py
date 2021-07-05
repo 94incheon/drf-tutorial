@@ -17,9 +17,22 @@ Class Base View
 '''
 
 
-class ReviewListAPI(generics.ListCreateAPIView):
-    queryset = Review.objects.all()
+class ReviewCreateAPI(generics.CreateAPIView):
     serializer_class = ReviewSerializer
+
+    def perform_create(self, serializer):
+        pk = self.kwargs.get('pk')
+        movie = WatchList.objects.get(pk=pk)
+        serializer.save(watchlist=movie)
+
+
+class ReviewListAPI(generics.ListAPIView):
+    # queryset = Review.objects.all() # 현재 영화에 대한 리뷰를 받고싶은데, 모든리뷰를 리턴중
+    serializer_class = ReviewSerializer
+
+    def get_queryset(self):
+        pk = self.kwargs['pk']
+        return Review.objects.filter(watchlist=pk)
 
 
 class ReviewDetailAPI(generics.RetrieveUpdateDestroyAPIView):
