@@ -190,10 +190,12 @@ class StreamPlatformDetailAPI(APIView):
 class WatchListLV(generics.ListAPIView):  # filter Test용 (generics)
     queryset = WatchList.objects.select_related('platform').prefetch_related('reviews').all()
     serializer_class = WatchListSerializer
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['title', 'platform__name']
+    # filter_backends = [DjangoFilterBackend]
+    # filterset_fields = ['title', 'platform__name'] ?title=value&platform__name=value
     # filter_backends = [filters.SearchFilter]
     # search_fields = ['^title', 'platform__name']  # ?search=value, ^ = %
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = ['avg_rating', 'number_rating']  # ?ordering=avg_rating
 
 
 class WatchListAPI(APIView):
