@@ -155,8 +155,11 @@ REST_FRAMEWORK = {
     #     'rest_framework.throttling.UserRateThrottle'
     # ],
     'DEFAULT_THROTTLE_RATES': {
-        'anon': '5/day',  # second, minute, hour, day
-        'user': '10/day'
+        'anon': '5/minute',  # second, minute, hour, day
+        'user': '10/day',
+        'review-create': '10/day',
+        'review-list': '100/day',
+        'review-detail': '5/minute',
     }
 }
 
