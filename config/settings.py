@@ -149,13 +149,21 @@ REST_FRAMEWORK = {
         # 'rest_framework.authentication.BasicAuthentication',
         # 'rest_framework.authentication.TokenAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ]
+    ],
+    # 'DEFAULT_THROTTLE_CLASSES': [
+    #     'rest_framework.throttling.AnonRateThrottle',
+    #     'rest_framework.throttling.UserRateThrottle'
+    # ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '5/day',  # second, minute, hour, day
+        'user': '10/day'
+    }
 }
 
 # JWT
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),  # AT life time
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),  # AT life time
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),  # RT life time
     'ROTATE_REFRESH_TOKENS': True,  # refresh 할때 새로운 refresh_token 반환
     'BLACKLIST_AFTER_ROTATION': True,  # refresh 토큰 블랙리스트 추가
