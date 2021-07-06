@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_framework_simplejwt',
     'debug_toolbar',
+    'django_filters',
     # My Apps
     'watchlist_app',
     'user_app',
@@ -160,7 +161,8 @@ REST_FRAMEWORK = {
         'review-create': '10/day',
         'review-list': '100/day',
         'review-detail': '5/minute',
-    }
+    },
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
 
 # JWT

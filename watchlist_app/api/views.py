@@ -4,12 +4,15 @@ from rest_framework import status
 from rest_framework import mixins
 from rest_framework import generics
 from rest_framework import viewsets
+from rest_framework import filters
 from rest_framework.throttling import UserRateThrottle, AnonRateThrottle, ScopedRateThrottle
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.exceptions import ValidationError, NotFound
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
+
+from django_filters.rest_framework import DjangoFilterBackend
 
 from watchlist_app.models import Review, WatchList, StreamPlatform
 from watchlist_app.api.permissions import IsAdminOrReadOnly, IsReviewUserOrReadOnly
@@ -80,6 +83,8 @@ class ReviewListAPI(generics.ListAPIView):
     serializer_class = ReviewSerializer
     # permission_classes = [IsAuthenticated]
     throttle_classes = [ReviewListThrottle, AnonRateThrottle]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['review_user__username', 'active']
 
     def get_queryset(self):
         pk = self.kwargs['pk']
@@ -180,6 +185,15 @@ class StreamPlatformDetailAPI(APIView):
         platform = get_object_or_404(StreamPlatform, pk=pk)
         platform.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class WatchListLV(generics.ListAPIView):  # filter Test용 (generics)
+    queryset = WatchList.objects.select_related('platform').prefetch_related('reviews').all()
+    serializer_class = WatchListSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['title', 'platform__name']
+    # filter_backends = [filters.SearchFilter]
+    # search_fields = ['^title', 'platform__name']  # ?search=value, ^ = %
 
 
 class WatchListAPI(APIView):

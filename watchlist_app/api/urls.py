@@ -11,6 +11,7 @@ router.register('stream', views.StreamPlatformVS, basename='streamplatform')
 urlpatterns = [
     path('', views.WatchListAPI.as_view(), name='watchlist-list'),
     path('<int:pk>/', views.WatchDetailAPI.as_view(), name='watchlist-detail'),
+    path('list2/', views.WatchListLV.as_view(), name='watch-list'),
 
     path('', include(router.urls)),
 
