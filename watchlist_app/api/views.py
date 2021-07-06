@@ -6,7 +6,7 @@ from rest_framework import generics
 from rest_framework import viewsets
 from rest_framework.throttling import UserRateThrottle, AnonRateThrottle, ScopedRateThrottle
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
-from rest_framework.exceptions import ValidationError
+from rest_framework.exceptions import ValidationError, NotFound
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
@@ -21,6 +21,30 @@ from watchlist_app.api.serializers import (ReviewSerializer, WatchListSerializer
 '''
 Class Base View
 '''
+
+
+class UserReview(generics.ListAPIView):
+    serializer_class = ReviewSerializer
+    # permission_classes = [IsAuthenticated]
+    # throttle_classes = [ReviewListThrottle, AnonRateThrottle]
+
+    # URL 을 활용한 Filter
+    # def get_queryset(self):
+    #     username = self.kwargs['username']
+    #     qs = Review.objects.filter(review_user__username__icontains=username)
+    #     if not qs:
+    #         raise NotFound()
+    #     return qs
+
+    # Query String을 활용한 Filter
+    def get_queryset(self):
+        queryset = Review.objects.all()
+        username = self.request.query_params.get('username', None)
+        if username is not None:
+            queryset = queryset.filter(review_user__username__icontains=username)
+        if not queryset:
+            raise NotFound()
+        return queryset
 
 
 class ReviewCreateAPI(generics.CreateAPIView):

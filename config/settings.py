@@ -170,7 +170,7 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),  # RT life time
     'ROTATE_REFRESH_TOKENS': True,  # refresh 할때 새로운 refresh_token 반환
     'BLACKLIST_AFTER_ROTATION': True,  # refresh 토큰 블랙리스트 추가
-    'UPDATE_LAST_LOGIN': False,  # 로그인시 last_login 필드 업데이트
+    'UPDATE_LAST_LOGIN': False,  # 로그인시 last_login 필드 업데이트(False권장)
     'USER_ID_CLAIM': 'user_id',  # Payload Key값
     'USER_ID_FIELD': 'id',  # Payload Value값
 }
