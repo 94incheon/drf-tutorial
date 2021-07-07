@@ -162,7 +162,9 @@ REST_FRAMEWORK = {
         'review-list': '100/day',
         'review-detail': '5/minute',
     },
-    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',  # PageNumberPagination, LimitOffsetPagination
+    # 'PAGE_SIZE': 10
 }
 
 # JWT
