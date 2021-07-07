@@ -1,4 +1,4 @@
-from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination
+from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination, CursorPagination
 
 
 class WatchListPagination(PageNumberPagination):
@@ -14,3 +14,10 @@ class WatchListLOPagination(LimitOffsetPagination):
     limit_query_param = 'limit'  # default: limit
     offset_query_param = 'start'  # default: offset
     max_limit = 5
+
+
+# Cursor 페이징은 Ordering Filter와 같이 사용할 수 없다. (주의)
+class WatchListCursorPagination(CursorPagination):
+    page_size = 5
+    cursor_query_param = 'record'  # (default: cursor)
+    ordering = '-number_rating'  # Model fields에 정의된 컬럼을 지정해줘야 한다.

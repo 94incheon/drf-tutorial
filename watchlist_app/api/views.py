@@ -17,7 +17,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from watchlist_app.models import Review, WatchList, StreamPlatform
 from watchlist_app.api.permissions import IsAdminOrReadOnly, IsReviewUserOrReadOnly
 from watchlist_app.api.throttling import ReviewCreateThrottle, ReviewListThrottle
-from watchlist_app.api.paginations import WatchListLOPagination, WatchListPagination
+from watchlist_app.api.paginations import WatchListCursorPagination, WatchListLOPagination, WatchListPagination
 from watchlist_app.api.serializers import (ReviewSerializer, WatchListSerializer,
                                            StreamPlatformSerializer)
 
@@ -191,11 +191,12 @@ class StreamPlatformDetailAPI(APIView):
 class WatchListLV(generics.ListAPIView):  # filter Test용 (generics)
     queryset = WatchList.objects.select_related('platform').prefetch_related('reviews').all()
     serializer_class = WatchListSerializer
-    filter_backends = [filters.OrderingFilter, DjangoFilterBackend, filters.SearchFilter]  # filters.OrderingFilter, DjangoFilterBackend, filters.SearchFilter
-    ordering_fields = ['avg_rating', 'number_rating', 'created_at']  # ?ordering=-avg_rating
-    filterset_fields = ['title', 'platform__name']  # ?title=value&platform__name=value
-    search_fields = ['^title', 'platform__name']  # ?search=value, ^ = %
-    pagination_class = WatchListLOPagination  # WatchListPagination, WatchListLOPagination
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]  # filters.OrderingFilter, DjangoFilterBackend, filters.SearchFilter
+    # filter_backends = [filters.OrderingFilter, DjangoFilterBackend, filters.SearchFilter]  # filters.OrderingFilter, DjangoFilterBackend, filters.SearchFilter
+    # ordering_fields = ['avg_rating', 'number_rating', 'created_at']  # ?ordering=-avg_rating
+    # filterset_fields = ['title', 'platform__name']  # ?title=value&platform__name=value
+    # search_fields = ['^title', 'platform__name']  # ?search=value, ^ = %
+    pagination_class = WatchListCursorPagination  # WatchListPagination, WatchListLOPagination, WatchListCursorPagination
 
 
 class WatchListAPI(APIView):
