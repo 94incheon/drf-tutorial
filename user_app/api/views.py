@@ -37,3 +37,10 @@ def registration_view(request):
         data['refresh_token'] = str(refresh)
 
         return Response(data, status=status.HTTP_201_CREATED)
+
+
+@api_view(['POST'])
+def logout2(request):
+    token = RefreshToken(request.data.get('refresh'))
+    # Logout 로직 like) token.blacklist()
+    return Response({'message': 'successfully Logout!'}, status=status.HTTP_200_OK)
