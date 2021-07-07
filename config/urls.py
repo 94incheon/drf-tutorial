@@ -20,11 +20,9 @@ from django.conf import settings
 import debug_toolbar
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('watch/', include('watchlist_app.api.urls')),
-    path('accounts/', include('user_app.api.urls')),
-
-    # path('api-auth/', include('rest_framework.urls')),  # DRF 로그인기능, Basic인증방식 사용
+    path('dashboard/', admin.site.urls),
+    path('api/watch/', include('watchlist_app.api.urls')),
+    path('api/accounts/', include('user_app.api.urls')),
 ]
 
 if settings.DEBUG:

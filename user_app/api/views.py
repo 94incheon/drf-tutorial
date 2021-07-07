@@ -1,6 +1,5 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework.authtoken.models import Token
 from rest_framework import status
 
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -31,7 +30,6 @@ def registration_view(request):
         data['username'] = account.username
         data['email'] = account.email
 
-        # token = Token.objects.get(user=account)
         refresh = RefreshToken.for_user(account)
         data['access_token'] = str(refresh.access_token)
         data['refresh_token'] = str(refresh)
@@ -42,5 +40,4 @@ def registration_view(request):
 @api_view(['POST'])
 def logout2(request):
     token = RefreshToken(request.data.get('refresh'))
-    # Logout 로직 like) token.blacklist()
     return Response({'message': 'successfully Logout!'}, status=status.HTTP_200_OK)

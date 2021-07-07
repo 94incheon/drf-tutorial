@@ -17,4 +17,3 @@ class IsReviewUserOrReadOnly(permissions.BasePermission):
             return True
         else:
             return obj.review_user == request.user or request.user.is_superuser
-            # return obj.review_user == request.user

@@ -3,11 +3,8 @@ from django.contrib.auth.models import User
 
 from rest_framework import status
 from rest_framework.test import APITestCase
-from rest_framework.authtoken.models import Token
-from rest_framework_simplejwt.views import TokenObtainPairView
 
 from watchlist_app import models
-from watchlist_app.api import serializers
 
 
 class StreamPlatformTestCase(APITestCase):
@@ -32,7 +29,7 @@ class StreamPlatformTestCase(APITestCase):
             'about': '#1 Streaming Platform',
             'website': 'https://netflix.com'
         }
-        response = self.client.post(reverse('streamplatform-list'), data)  # router의 basename-list
+        response = self.client.post(reverse('streamplatform-list'), data)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_streamplatform_list(self):
@@ -130,7 +127,7 @@ class ReviewTestCase(APITestCase):
         self.assertEqual(models.Review.objects.get(watchlist=self.watchlist).rating, 5)
 
         response = self.client.post(reverse('review-create', args=(self.watchlist.id, )), data)
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)  # 영화당 리뷰 1번 생성가능
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_review_create_unauth(self):
         data = {
@@ -141,7 +138,7 @@ class ReviewTestCase(APITestCase):
             'active': True
         }
 
-        self.client.force_authenticate(user=None)  # unauth
+        self.client.force_authenticate(user=None)
         response = self.client.post(reverse('review-create', args=(self.watchlist.id, )), data)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 

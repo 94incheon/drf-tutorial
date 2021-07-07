@@ -143,42 +143,30 @@ INTERNAL_IPS = [
 # DRF
 
 REST_FRAMEWORK = {
-    # 'DEFAULT_PERMISSION_CLASSES': [
-    #     'rest_framework.permissions.IsAuthenticated',
-    # ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        # 'rest_framework.authentication.BasicAuthentication',
-        # 'rest_framework.authentication.TokenAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
-    # 'DEFAULT_THROTTLE_CLASSES': [
-    #     'rest_framework.throttling.AnonRateThrottle',
-    #     'rest_framework.throttling.UserRateThrottle'
-    # ],
     'DEFAULT_THROTTLE_RATES': {
-        'anon': '5/minute',  # second, minute, hour, day
+        'anon': '5/minute',
         'user': '10/day',
         'review-create': '10/day',
         'review-list': '100/day',
         'review-detail': '5/minute',
     },
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
-    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',  # PageNumberPagination, LimitOffsetPagination
-    # 'PAGE_SIZE': 10
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
-        # 'rest_framework.renderers.BrowsableAPIRenderer', # 브라우저API
     ]
 }
 
 # JWT
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),  # AT life time
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),  # RT life time
-    'ROTATE_REFRESH_TOKENS': True,  # refresh 할때 새로운 refresh_token 반환
-    'BLACKLIST_AFTER_ROTATION': True,  # refresh 토큰 블랙리스트 추가
-    'UPDATE_LAST_LOGIN': False,  # 로그인시 last_login 필드 업데이트(False권장)
-    'USER_ID_CLAIM': 'user_id',  # Payload Key값
-    'USER_ID_FIELD': 'id',  # Payload Value값
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'UPDATE_LAST_LOGIN': False,
+    'USER_ID_CLAIM': 'user_id',
+    'USER_ID_FIELD': 'id',
 }
